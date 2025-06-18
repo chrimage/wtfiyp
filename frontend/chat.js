@@ -18,7 +18,7 @@ class TriageChat {
         this.setupPageExitHandlers();
         this.updateProgress();
         
-        this.addMessage('ai', 'What\'s broken? I need 5 things: what\'s fucked up, what system it\'s on, how urgent it is, what you\'ve tried, and how you want us to contact you.\n\nStart with what\'s not working.');
+        this.addMessage('ai', 'Alright, what the hell is going wrong? I need to get you some help, so tell me what\'s broken and we\'ll figure this shit out together.\n\nWhat\'s not working?');
     }
     
     generateSessionId() {

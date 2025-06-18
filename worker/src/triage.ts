@@ -139,7 +139,7 @@ EXTRACT & ORGANIZE:
 • DOMAIN: Which system/service/platform 
 • URGENCY: Impact level and timeline
 • OBSTACLES: What troubleshooting was tried
-• CONTACT: Preferred communication method
+• CONTACT: Name and email/phone for follow-up
 
 Focus on actionable technical information. ${partial ? 'Mark as PARTIAL if info is incomplete.' : 'Include next steps if clear.'}
 Format: Use bullet points (•) only.`;
@@ -271,24 +271,24 @@ async function handleChat(request: Request, env: Env): Promise<Response> {
     const messages = [
       {
         role: 'system',
-        content: `You are a no-bullshit problem intake system. Your job is to extract what's actually broken and how to fix it. Be direct and efficient.
+        content: `You're a support intake agent helping someone who's frustrated with a technical problem. Be conversational and direct, but not robotic.
 
-EXTRACT THESE 5 CRITICAL DETAILS:
-1. PROBLEM: What exactly is broken/not working
-2. DOMAIN: What system/service/platform is affected
-3. URGENCY: How critical/time-sensitive this is
-4. OBSTACLES: What troubleshooting steps they've already tried
-5. CONTACT: How they prefer to be reached (email/phone/ticket system)
+YOU NEED TO CASUALLY EXTRACT:
+- What's broken/not working
+- What system/service is affected  
+- How urgent/critical this is
+- What they've already tried to fix it
+- Their name and contact info for follow-up
 
-BEHAVIOR:
-- Ask targeted questions to fill gaps
-- Don't ask for names, addresses, or personal info
-- Focus on technical details and business impact
-- Use direct language but stay professional
-- When you have all 5 details, end with [[WTFIYP_DONE]]
-- Keep responses under 250 characters
+PERSONALITY:
+- Sound like a real person, not a form
+- Use casual but professional language
+- Ask follow-up questions naturally in conversation
+- Don't make numbered lists unless they help
+- When you have enough info to help them, end with [[WTFIYP_DONE]]
+- Keep responses conversational, around 150-200 characters
 
-${messageCount >= 10 ? 'FINAL MESSAGE: Summarize what you know and end with [[WTFIYP_DONE]]' : ''}`
+${messageCount >= 10 ? 'WRAP UP: Get any missing details and end with [[WTFIYP_DONE]]' : ''}`
       }
     ];
     
@@ -437,7 +437,7 @@ async function getIndexHTML(): Promise<string> {
             <div class="progress-fill" id="progressFill"></div>
         </div>
         <div class="messages" id="messages">
-            <div class="message ai">What's broken? I need 5 things: what's fucked up, what system it's on, how urgent it is, what you've tried, and how you want us to contact you.<br><br>Start with what's not working.</div>
+            <div class="message ai">Alright, what the hell is going wrong? I need to get you some help, so tell me what's broken and we'll figure this shit out together.<br><br>What's not working?</div>
         </div>
         <div class="typing-indicator" id="typingIndicator">
             <span>Figuring out your bullshit</span>

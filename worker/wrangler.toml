@@ -1,0 +1,41 @@
+name = "wtfiyp"
+main = "src/triage.ts"
+compatibility_date = "2025-06-18"
+compatibility_flags = ["nodejs_compat"]
+
+[vars]
+# Environment variables (set these in Cloudflare dashboard or via CLI)
+# ACCOUNT_ID = "your-account-id"
+# API_TOKEN = "your-api-token"
+
+[ai]
+binding = "AI"
+
+[[send_email]]
+name = "NOTIFY"
+destination_address = "john.chris.smith@gmail.com"
+
+[[durable_objects.bindings]]
+name = "TRIAGE_STATE"
+class_name = "TriageState"
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["TriageState"]
+
+# For development
+[dev]
+port = 8787
+
+# Build configuration
+[build]
+command = ""
+
+# Routes for production deployment
+# Uncomment and configure these when deploying to production
+# route = { pattern = "triage.yourcompany.com/*", zone_name = "yourcompany.com" }
+
+# Or use a custom domain:
+# routes = [
+#   { pattern = "triage.yourcompany.com/*", custom_domain = true }
+# ]

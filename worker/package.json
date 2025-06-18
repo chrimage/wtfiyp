@@ -1,0 +1,31 @@
+{
+  "name": "phoenix-intake-worker",
+  "version": "1.0.0",
+  "description": "Cloudflare Worker for Firebird triage chat system",
+  "main": "src/triage.ts",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "test": "vitest",
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "mimetext": "^3.0.0"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20240725.0",
+    "@types/node": "^20.14.9",
+    "typescript": "^5.5.3",
+    "vitest": "^1.6.0",
+    "wrangler": "^4.20.1"
+  },
+  "keywords": [
+    "cloudflare",
+    "workers",
+    "triage",
+    "chat",
+    "ai"
+  ],
+  "author": "Phoenix Cartographer Solutions",
+  "license": "MIT"
+}

@@ -4,6 +4,8 @@
 
 A brutally efficient triage chat that cuts through the bullshit and gets straight to the point. No hand-holding, no corporate speak, just raw problem-solving efficiency powered by AI.
 
+## 🚀 [**TRY THE LIVE DEMO**](https://wtfiyp.bytecrash.xyz) 🚀
+
 ## What This Does
 
 You got a problem? This chat will extract the essential details from you faster than you can say "have you tried turning it off and on again." It's designed for people who are already pissed off and don't want to waste time explaining their life story to a chatbot.

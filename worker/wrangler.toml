@@ -3,6 +3,11 @@ main = "src/triage.ts"
 compatibility_date = "2025-06-18"
 compatibility_flags = ["nodejs_compat"]
 
+# Custom domain routes
+routes = [
+  { pattern = "wtfiyp.bytecrash.xyz", custom_domain = true }
+]
+
 [vars]
 # Environment variables (set these in Cloudflare dashboard or via CLI)
 # ACCOUNT_ID = "your-account-id"
@@ -31,11 +36,4 @@ port = 8787
 [build]
 command = ""
 
-# Routes for production deployment
-# Uncomment and configure these when deploying to production
-# route = { pattern = "triage.yourcompany.com/*", zone_name = "yourcompany.com" }
-
-# Or use a custom domain:
-# routes = [
-#   { pattern = "triage.yourcompany.com/*", custom_domain = true }
-# ]
+# Routes for production deployment (configured above)

@@ -18,7 +18,7 @@ class TriageChat {
         this.setupPageExitHandlers();
         this.updateProgress();
         
-        this.addMessage('ai', 'Alright, I need to know what the fuck your problem is. Don\'t sugarcoat it, don\'t give me a fucking novel. Just tell me what\'s broken, what you\'ve tried, and how urgent this shit is.\n\nWhat\'s the problem?');
+        this.addMessage('ai', 'What\'s broken? I need 5 things: what\'s fucked up, what system it\'s on, how urgent it is, what you\'ve tried, and how you want us to contact you.\n\nStart with what\'s not working.');
     }
     
     generateSessionId() {
@@ -124,7 +124,7 @@ class TriageChat {
                 this.updateProgress();
             }
             
-            if (data.shouldFinish || data.reply.includes('[[FIREBIRD_DONE]]')) {
+            if (data.shouldFinish || data.reply.includes('[[WTFIYP_DONE]]')) {
                 setTimeout(() => this.finishChat(), 1000);
             }
             

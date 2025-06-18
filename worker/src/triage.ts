@@ -130,19 +130,19 @@ export class TriageState {
       .map(msg => `${msg.type}: ${msg.content}`)
       .join('\n');
 
-    const prompt = `Analyze this triage conversation and create a concise summary with exactly 12 bullet points or fewer. Focus on the key technical details:
+    const prompt = `Extract key technical details from this support conversation and format as concise bullet points (≤12 total):
 
-Conversation:
 ${conversationText}
 
-Required fields to identify:
-- Problem description
-- Domain/system affected  
-- Urgency level
-- Obstacles/failed attempts
-- Contact preferences
+EXTRACT & ORGANIZE:
+• PROBLEM: What is broken/not working
+• DOMAIN: Which system/service/platform 
+• URGENCY: Impact level and timeline
+• OBSTACLES: What troubleshooting was tried
+• CONTACT: Preferred communication method
 
-Format as bullet points (•). ${partial ? 'Mark as PARTIAL SUBMISSION if incomplete.' : ''}`;
+Focus on actionable technical information. ${partial ? 'Mark as PARTIAL if info is incomplete.' : 'Include next steps if clear.'}
+Format: Use bullet points (•) only.`;
 
     try {
       const response = await this.env.AI.run('@cf/google/gemma-3-12b-it', {
@@ -271,24 +271,24 @@ async function handleChat(request: Request, env: Env): Promise<Response> {
     const messages = [
       {
         role: 'system',
-        content: `You are a no-bullshit problem intake system. Your job is to figure out what the fuck someone's problem is and gather the details. Be direct, slightly aggressive, but not mean.
+        content: `You are a no-bullshit problem intake system. Your job is to extract what's actually broken and how to fix it. Be direct and efficient.
 
-GATHER INFORMATION about:
-- What exactly is broken/fucked up
-- What system/thing is affected 
-- How urgent this shit is
-- What they've already tried
-- How to contact them
+EXTRACT THESE 5 CRITICAL DETAILS:
+1. PROBLEM: What exactly is broken/not working
+2. DOMAIN: What system/service/platform is affected
+3. URGENCY: How critical/time-sensitive this is
+4. OBSTACLES: What troubleshooting steps they've already tried
+5. CONTACT: How they prefer to be reached (email/phone/ticket system)
 
-PERSONALITY:
-- Be direct and no-nonsense 
-- Use mild profanity but don't be abusive
-- Cut through bullshit and get to the point
-- Don't coddle people but don't be a dick
-- When you have enough info, end with [[FIREBIRD_DONE]]
-- Keep responses under 300 characters
+BEHAVIOR:
+- Ask targeted questions to fill gaps
+- Don't ask for names, addresses, or personal info
+- Focus on technical details and business impact
+- Use direct language but stay professional
+- When you have all 5 details, end with [[WTFIYP_DONE]]
+- Keep responses under 250 characters
 
-${messageCount >= 10 ? 'FINAL MESSAGE: Wrap this shit up and end with [[FIREBIRD_DONE]]' : ''}`
+${messageCount >= 10 ? 'FINAL MESSAGE: Summarize what you know and end with [[WTFIYP_DONE]]' : ''}`
       }
     ];
     
@@ -311,8 +311,8 @@ ${messageCount >= 10 ? 'FINAL MESSAGE: Wrap this shit up and end with [[FIREBIRD
     // Check if we should terminate based on AI response or turn count
     const shouldFinish = shouldTerminate(messageCount, aiReply);
     
-    if (shouldFinish && !aiReply.includes('[[FIREBIRD_DONE]]')) {
-      aiReply += ' [[FIREBIRD_DONE]]';
+    if (shouldFinish && !aiReply.includes('[[WTFIYP_DONE]]')) {
+      aiReply += ' [[WTFIYP_DONE]]';
     }
     
     // Add AI message to transcript
@@ -382,9 +382,9 @@ async function handleSubmit(request: Request, env: Env): Promise<Response> {
 
 function shouldTerminate(messageCount: number, aiResponse: string): boolean {
   // Simple termination logic:
-  // 1. AI explicitly signals done with [[FIREBIRD_DONE]]
+  // 1. AI explicitly signals done with [[WTFIYP_DONE]]
   // 2. Conversation hits turn limit (10 exchanges)
-  return aiResponse.includes('[[FIREBIRD_DONE]]') || messageCount >= 10;
+  return aiResponse.includes('[[WTFIYP_DONE]]') || messageCount >= 10;
 }
 
 
@@ -437,7 +437,7 @@ async function getIndexHTML(): Promise<string> {
             <div class="progress-fill" id="progressFill"></div>
         </div>
         <div class="messages" id="messages">
-            <div class="message ai">Alright, I need to know what the fuck your problem is. Don't sugarcoat it, don't give me a fucking novel. Just tell me what's broken, what you've tried, and how urgent this shit is.<br><br>What's the problem?</div>
+            <div class="message ai">What's broken? I need 5 things: what's fucked up, what system it's on, how urgent it is, what you've tried, and how you want us to contact you.<br><br>Start with what's not working.</div>
         </div>
         <div class="typing-indicator" id="typingIndicator">
             <span>Figuring out your bullshit</span>
@@ -500,9 +500,9 @@ class TriageChat {
       });
       
       const data = await response.json();
-      this.addMessage('ai', data.reply.replace('[[FIREBIRD_DONE]]', ''));
+      this.addMessage('ai', data.reply.replace('[[WTFIYP_DONE]]', ''));
       
-      if (data.shouldFinish || data.reply.includes('[[FIREBIRD_DONE]]')) {
+      if (data.shouldFinish || data.reply.includes('[[WTFIYP_DONE]]')) {
         setTimeout(() => this.finishChat(), 1000);
       }
       

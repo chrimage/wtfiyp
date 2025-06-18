@@ -81,12 +81,14 @@ const alarmTime = Date.now() + 5 * 60 * 1000; // 5 minutes instead of 2
 
 ## Data Collection Fields
 
-The AI attempts to gather 5 key pieces of information:
-- **Problem**: What's broken/not working
-- **Domain**: System/service affected  
-- **Urgency**: How critical/time-sensitive
-- **Obstacles**: Previous troubleshooting attempts
-- **Contact**: Preferred contact method
+The AI extracts 5 critical technical details:
+- **Problem**: What exactly is broken/not working
+- **Domain**: Which system/service/platform is affected
+- **Urgency**: Impact level and timeline constraints
+- **Obstacles**: What troubleshooting steps were already tried
+- **Contact**: Preferred communication method (email/phone/ticket system)
+
+Note: The system does NOT collect personal information like names, addresses, or account details.
 
 ## Testing Approach
 
